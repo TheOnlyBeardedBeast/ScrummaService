@@ -69,5 +69,10 @@ namespace ScrummaService.Hubs
         {
             await Clients.All.SendAsync("clientTimerStop");
         }
+
+        public async Task OnClearVotes()
+        {
+            await Clients.All.SendAsync("clearVotes");
+        }
     }
 }
