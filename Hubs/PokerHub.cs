@@ -25,8 +25,9 @@ namespace ScrummaService.Hubs
 
             if (user != null)
             {
-                Connections.Remove(user);
+
                 await Clients.All.SendAsync("clientLeft", user.ConnectionId);
+                Connections.Remove(user);
             }
         }
 
