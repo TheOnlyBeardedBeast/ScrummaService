@@ -15,7 +15,7 @@ namespace ScrummaService.Hubs
         {
 
             await base.OnConnectedAsync();
-            await Clients.All.SendAsync("clientConnected");
+            // await Clients.All.SendAsync("clientConnected");
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)
@@ -25,35 +25,31 @@ namespace ScrummaService.Hubs
 
             if (user != null)
             {
-
-                await Clients.All.SendAsync("clientLeft", user.ConnectionId);
+                await Clients.OthersInGroup(GetCurentGroup()).SendAsync("clientLeft", user.ConnectionId);
+                await Groups.RemoveFromGroupAsync(user.ConnectionId, user.Group.ToString());
                 Connections.Remove(user);
             }
         }
 
-        public async Task OnJoin(string UserName)
+        public async Task OnJoin(User user)
         {
-            User user = new User
-            {
-                ConnectionId = Context.ConnectionId,
-                UserName = UserName,
-                Role = RoleEnum.User,
-            };
+            user.ConnectionId = Context.ConnectionId;
 
             if (Connections.Count > 0)
             {
-                await Clients.Others.SendAsync("clientSyncRequest", Context.ConnectionId);
+                await Clients.OthersInGroup(user.Group.ToString()).SendAsync("clientSyncRequest", Context.ConnectionId);
             }
 
             Connections.Add(user);
+            await Groups.AddToGroupAsync(user.ConnectionId, user.Group.ToString());
 
             await Clients.Caller.SendAsync("selfJoined", user);
-            await Clients.Others.SendAsync("clientJoined", user);
+            await Clients.OthersInGroup(user.Group.ToString()).SendAsync("clientJoined", user);
         }
 
         public async Task OnVote(float num)
         {
-            await Clients.Others.SendAsync("clientVoted", Context.ConnectionId, num);
+            await Clients.OthersInGroup(GetCurentGroup()).SendAsync("clientVoted", Context.ConnectionId, num);
         }
 
         public async Task OnSync(string connectionId, User user, int? seconds)
@@ -63,17 +59,22 @@ namespace ScrummaService.Hubs
 
         public async Task OnTimerStart()
         {
-            await Clients.All.SendAsync("clientTimerStart");
+            await Clients.Group(GetCurentGroup()).SendAsync("clientTimerStart");
         }
 
         public async Task OnTimerStop()
         {
-            await Clients.All.SendAsync("clientTimerStop");
+            await Clients.Group(GetCurentGroup()).SendAsync("clientTimerStop");
         }
 
         public async Task OnClearVotes()
         {
-            await Clients.All.SendAsync("clearVotes");
+            await Clients.Group(GetCurentGroup()).SendAsync("clearVotes");
+        }
+
+        private string GetCurentGroup()
+        {
+            return Connections.FirstOrDefault(user => user.ConnectionId == Context.ConnectionId)?.Group.ToString();
         }
     }
 }
