@@ -13,7 +13,8 @@ namespace ScrummaService.Controllers
     {
         public IActionResult Index()
         {
-            return PhysicalFile(Path.Combine(Directory.GetCurrentDirectory(), "build", "index.html"), "text/HTML");
+            return Json(new { Message = "Hello world" });
+            //return PhysicalFile(Path.Combine(Directory.GetCurrentDirectory(), "build", "index.html"), "text/HTML");
         }
     }
 }

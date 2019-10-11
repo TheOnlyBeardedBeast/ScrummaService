@@ -72,6 +72,11 @@ namespace ScrummaService.Hubs
             await Clients.Group(GetCurentGroup()).SendAsync("clearVotes");
         }
 
+        public async Task OnSyncTitle(string title)
+        {
+            await Clients.OthersInGroup(GetCurentGroup()).SendAsync("syncTitle", title);
+        }
+
         private string GetCurentGroup()
         {
             return Connections.FirstOrDefault(user => user.ConnectionId == Context.ConnectionId)?.Group.ToString();
