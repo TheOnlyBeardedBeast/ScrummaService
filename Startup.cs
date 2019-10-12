@@ -78,8 +78,8 @@ namespace ScrummaService
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapFallbackToController("Index", "Home");
+                    pattern: "{controller=Poker}/{action=Index}/{id?}");
+                endpoints.MapFallbackToController("Index", "Poker");
                 endpoints.MapHub<PokerHub>("/pokerhub");
             });
 

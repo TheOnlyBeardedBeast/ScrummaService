@@ -10,19 +10,11 @@ namespace ScrummaService.Hubs
 {
     public class PokerHub : Hub
     {
-        private static List<User> Connections = new List<User>();
-
-        public override async Task OnConnectedAsync()
-        {
-
-            await base.OnConnectedAsync();
-            // await Clients.All.SendAsync("clientConnected");
-        }
+        private static List<PokerConnection> Connections = new List<PokerConnection>();
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
-            System.Console.WriteLine("Disconnected");
-            User user = Connections.FirstOrDefault(c => c.ConnectionId == Context.ConnectionId);
+            var user = Connections.FirstOrDefault(c => c.ConnectionId == Context.ConnectionId);
 
             if (user != null)
             {
@@ -41,7 +33,10 @@ namespace ScrummaService.Hubs
                 await Clients.OthersInGroup(user.Group.ToString()).SendAsync("clientSyncRequest", Context.ConnectionId);
             }
 
-            Connections.Add(user);
+            Connections.Add(new PokerConnection {
+                ConnectionId = user.ConnectionId,
+                Group = user.Group
+            });
             await Groups.AddToGroupAsync(user.ConnectionId, user.Group.ToString());
 
             await Clients.Caller.SendAsync("selfJoined", user);
