@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using ScrummaService.Models;
@@ -75,6 +76,22 @@ namespace ScrummaService.Hubs
         public async Task OnSyncTitle(string title)
         {
             await Clients.OthersInGroup(GetCurentGroup()).SendAsync("syncTitle", title);
+        }
+
+        public async Task OnAddToHistory(HistoryItem historyItem)
+        {
+            await Clients.Group(GetCurentGroup()).SendAsync("addToHistory", historyItem);
+        }
+
+        public async Task OnSyncHistoryRequest(string connectionId)
+        {
+            Console.WriteLine("OnSyncHistoryRequest "+ connectionId);
+            await Clients.Client(connectionId).SendAsync("syncHistoryRequest", Context.ConnectionId);
+        }
+
+        public async Task OnSyncHistoryResponse(string connectionId, List<HistoryItem> history)
+        {
+            await Clients.Client(connectionId).SendAsync("syncHistoryResponse", history);
         }
 
         private string GetCurentGroup()
