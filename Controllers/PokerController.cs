@@ -46,23 +46,20 @@ namespace ScrummaService.Controllers
         [HttpPost("VerifyGroup")]
         public async Task<IActionResult> VerifyGroup([FromBody]GroupVerificationViewModel groupVM)
         {
-            Console.WriteLine("######################## "+ groupVM.Id);
             var groupToVerify = db.Groups.FirstOrDefault(group => group.Id == groupVM.Id);
 
             if (groupToVerify == null)
             {
-                Console.WriteLine("###################### no group");
                 return BadRequest();
-                
+
             }
 
             IPasswordHasher<Group> hasher = new PasswordHasher<Group>();
 
-            var passwordVerification = hasher.VerifyHashedPassword(groupToVerify, groupToVerify.Password,groupVM.Password);
+            var passwordVerification = hasher.VerifyHashedPassword(groupToVerify, groupToVerify.Password, groupVM.Password);
 
             if (passwordVerification != PasswordVerificationResult.Success)
             {
-                Console.WriteLine("################## bad verify");
                 return BadRequest();
             }
 
