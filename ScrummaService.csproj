@@ -6,6 +6,26 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\favicon.ico" />
+    <None Include="wwwroot\index.html" />
+    <None Include="wwwroot\logo192.png" />
+    <None Include="wwwroot\logo512.png" />
+    <None Include="wwwroot\precache-manifest.7f936ebf4361c6a8e7689d99cc0690e6.js" />
+    <None Include="wwwroot\robots.txt" />
+    <None Include="wwwroot\service-worker.js" />
+    <None Include="wwwroot\static\css\2.5dbdccff.chunk.css" />
+    <None Include="wwwroot\static\css\2.5dbdccff.chunk.css.map" />
+    <None Include="wwwroot\static\css\main.5ea78aa4.chunk.css" />
+    <None Include="wwwroot\static\css\main.5ea78aa4.chunk.css.map" />
+    <None Include="wwwroot\static\js\2.5407a3d8.chunk.js" />
+    <None Include="wwwroot\static\js\2.5407a3d8.chunk.js.map" />
+    <None Include="wwwroot\static\js\main.3de02ba0.chunk.js" />
+    <None Include="wwwroot\static\js\main.3de02ba0.chunk.js.map" />
+    <None Include="wwwroot\static\js\runtime-main.06a7a61c.js" />
+    <None Include="wwwroot\static\js\runtime-main.06a7a61c.js.map" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <None Update="app.db" CopyToOutputDirectory="PreserveNewest" />

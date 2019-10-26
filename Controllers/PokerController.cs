@@ -22,8 +22,8 @@ namespace ScrummaService.Controllers
 
         public IActionResult Index()
         {
-            return Json(new { Message = "Hello world" });
-            //return PhysicalFile(Path.Combine(Directory.GetCurrentDirectory(), "build", "index.html"), "text/HTML");
+            //return Json(new { Message = "Hello world" });
+            return PhysicalFile(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "index.html"), "text/HTML");
         }
 
         [HttpPost("RegisterGroup")]

@@ -74,6 +74,11 @@ namespace ScrummaService.Hubs {
             await Clients.Client (connectionId).SendAsync ("syncHistoryResponse", history, title);
         }
 
+        public async Task OnPause ()
+        {
+            await Clients.Group(GetCurentGroup()).SendAsync("pauseRequest");
+        }
+
         private string GetCurentGroup () {
             return Connections.FirstOrDefault (user => user.ConnectionId == Context.ConnectionId)?.Group.ToString ();
         }
